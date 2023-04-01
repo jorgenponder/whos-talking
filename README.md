@@ -2,6 +2,39 @@
 
 A project to detect who is talking when in audio/video and mark that up as metadata in captions
 
+Note this is alpha code, it's literally just a first upload to have something to show.
+
+## Purpose
+
+To take an srt file, for example created by whisper.cpp, and add info on who is talking for each segment in the .srt file.
+
+Currently it just takes a modified srt file and outputs another srt file with "Speaker" or "Not speaker" per segment. A segment is a piece of subtitle between two timestamps.
+
+## How it works, high level
+
+It splits a wav file ito small parts according to a spec file you've made. It then compares each part to a known speaker in a wav file, and indicates if that speaker is the one speaking. It uses SpeechBrain for that last part, see further down. It uses a speaker sample, i.e. you must have a short wav file with only the speaker you're looking for.
+
+See this tweet for an example: <https://twitter.com/jorgenponder/status/1641948460420145152>
+
+## How it works, lower level
+
+Currently, you need to create a file with the following kind of lines in it:
+
+    00:00:00.000 00:00:05.600 20200424000000
+    00:00:05.600 00:00:11.320 20200424000005
+    00:00:11.320 00:00:16.720 20200424000011
+    00:00:16.720 00:00:25.160 20200424000016
+    
+This is similar to the timestamps in an .srt file, but with a point instead of a comma as the separator to the millisceonds. This is because ffpmeg uses the dot format. The third item on each line is the global timestamp of the line, i.e. year, date and timestamp. It will be used as the name for the individual wav file that will be classified for who's talking.
+
+If you have a big wav file with a 16k sample rate called ```20200424.wav```, and a file ```20200424.spec``` containing the above lines, split.py will split the wav file into segments based on the timestamps on those lines, each file named after the last item on each line:
+
+    ./bin/python split.py 20200424.wav 20200424.spec
+    
+Once you have all those wav files, you can run ```./bin python make-srt-with-id.py```. First you must change the specifications in ```make-srt-with-id.py``` to match where the wav files are, and where the speaker sample is.
+
+./bin/python make-srt-with-id.py
+
 ## Install SpeechBrain
 
 Thirs project relies on SpeechBrain. Here is one way to install it. It's not the smartest way to do it but I prefer to specify the way I did that worked, instead of an optimized way I haven't tried yet. Instructions for Ubuntu, but should work under most OSes.
