@@ -1,5 +1,10 @@
 import sys
+import os
 import subprocess
+from pathlib import Path
+import srt
+
+path = "./splitted/"
 
 # SRT looks like this:
 
@@ -23,34 +28,43 @@ import subprocess
 
 # In both expressions, the optional ‘-’ indicates negative duration. 
 
+def get_subs(data):
+    
+    # print(data)
+    subs = []
+    for sub in srt.parse(data):
+        # use case is no subs 10 hours or longer
+        start = "0" + str(sub.start)
+        end = "0" + str(sub.end)
+        subs.append({'start':start, 'end':end})
+    return subs
+
 def main():
     """split a wav file into specified segments by calling ffmpeg from the shell"""
 
     # check command line for original wav file and segment list file
-    if len(sys.argv) != 3:
-        print("usage: split <original_track> <track_list>")
+    if len(sys.argv) != 2:
+        print("usage: split <original_file>")
         exit(1)
-
+    data = ''.join(sys.stdin.readlines())
+    try:
+        os.mkdir(path)
+    except FileExistsError:
+        pass
     # record command line args
-    original_track = sys.argv[1]
-    track_list = sys.argv[2]
+    original_file = sys.argv[1]
 
     # create a template of the ffmpeg call in advance
-    cmd_string = "ffmpeg -i {tr} -acodec copy -ss {st} -to {en} {nm}.wav"
+    cmd_string = "ffmpeg -i {original_file} -acodec copy -ss {start} -to {end} {path}{id}.wav"
 
-    # read each line of the segment list and split into start, end, name
-    with open(track_list, "r") as f:
-        for line in f:
-            # skip comment and empty lines
-            if line.startswith("#") or len(line) <= 1:
-                continue
+    for line in get_subs(data):
+        id = Path(original_file).stem + line['start'].split('.')[0].replace(':','')
+        print(id)
+        command = cmd_string.format(original_file=original_file, start=line['start'], end=line['end'], path=path, id=id)
+        print(command)
 
-            # create command string for a given wav segment
-            start, end, nm = line.strip().split()
-            command = cmd_string.format(tr=original_track, st=start, en=end, nm=nm)
-
-            # use subprocess to execute the command in the shell
-            subprocess.call(command, shell=True)
+        # use subprocess to execute the command in the shell
+        subprocess.call(command, shell=True)
 
     return None
 
