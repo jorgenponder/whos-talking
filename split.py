@@ -4,7 +4,7 @@ import subprocess
 from pathlib import Path
 import srt
 
-out_path = "./splitted/"
+out_path = "./split-segments/"
 
 def get_subs(data):
     """ """
@@ -32,7 +32,7 @@ def main():
     original_file = sys.argv[1]
 
     # create a template of the ffmpeg call in advance
-    cmd_string = "ffmpeg -y -i {original_file} -acodec copy -ss {start} -to {end} {out_path}{id}.wav"
+    cmd_string = "ffmpeg -y -i {original_file} -acodec pcm_s16le -ar 16000 -ss {start} -to {end} {out_path}{id}.wav"
 
     for line in get_subs(data):
         id = Path(original_file).stem + line['start'].split('.')[0].replace(':','')
