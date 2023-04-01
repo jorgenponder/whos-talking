@@ -22,7 +22,7 @@ See this tweet for an example: <https://twitter.com/jorgenponder/status/16419484
 
 You need one srt file that contains the video or sound file.
 
-If you have a big wav file with a 16k sample rate called ```20200424.mp4```, and a file ```20200424.spec``` containing the lines, split.py will split the wav file into wav segments based on the timestamps on those lines:
+If you have a big file called ```20200424.mp4```, and a file ```20200424.srt``` containing the segments, split.py will split the mp4 file into wav segments based on the timestamps from those segments:
 
     cat 2020-04-24.srt | ./bin/python split.py 20200424.mp4
     
