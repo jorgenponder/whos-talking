@@ -18,7 +18,7 @@ Clone SpeechBrain:
 
     git clone git@github.com:speechbrain/speechbrain.git
 
-You will now need to move stuff from that directory to where virtualenv is. I'm a bit unsure how I did this looking at my bash history. This the iffy step that should have been done differently. Maybe install everything from source or something
+You will now need to move stuff up from that directory to where virtualenv is. I'm a bit unsure how I did this looking at my bash history. This the iffy step that should have been done differently. Maybe install everything from source or something. Or just change the code below to specify into the speechbrain directory.
 
 Install ipython:
 
@@ -46,4 +46,4 @@ You can then check what is in ```score```. Should be a value below 0.5. The past
 
     score, prediction = verification.verify_files("tests/samples/ASR/spk1_snt1.wav", "tests/samples/ASR/spk1_snt2.wav") # Same Speaker
 
-Should be a value above 0.5 in ```score```.
+Should be a value above 0.5 in ```score```. The above code snipptes taken from: <https://huggingface.co/speechbrain/spkrec-ecapa-voxceleb>
