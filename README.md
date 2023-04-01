@@ -37,7 +37,7 @@ Once you have all those wav files, you can run ```./bin python make-srt-with-id.
 
 ## Install SpeechBrain
 
-Thirs project relies on SpeechBrain. Here is one way to install it. It's not the smartest way to do it but I prefer to specify the way I did that worked, instead of an optimized way I haven't tried yet. Instructions for Ubuntu, but should work under most OSes.
+This project relies on SpeechBrain. Here is one way to install it. It's not the smartest way to do it but I prefer to specify the way I did that worked, instead of an optimized way I haven't tried yet. Instructions for Ubuntu, but should work under most OSes.
 
 Make a directory with virtualenv:
 
