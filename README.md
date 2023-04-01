@@ -10,6 +10,8 @@ To take an srt file, for example created by whisper.cpp, and add info on who is 
 
 Currently it just takes a modified srt file and outputs another srt file with "Speaker" or "Not speaker" per segment. A segment is a piece of subtitle between two timestamps.
 
+Whisper.cpp actually has a command line flag for diarization, as they call it, but it works poorly in practice: <https://github.com/ggerganov/whisper.cpp/issues/64>
+
 ## How it works, high level
 
 It splits a wav file into small parts according to a spec file you've made. It then compares each part to a known speaker in a wav file, and indicates if that speaker is the one speaking. It uses SpeechBrain for that last part, see further down. It uses a speaker sample, i.e. you must have a short wav file with only the speaker you're looking for.
@@ -85,7 +87,7 @@ Should be a value above 0.5 in ```score```. The above code snipptes taken from: 
 
 The different functions will be split into command line programs that work with STDIN and STDOUT.
 
-The first in the chain will take an .srt file and create a spec file fo chopping up int segment wav files.
+The first in the chain will take an .srt file and create a spec file for chopping up into segment wav files.
 
 The second will do the actual chopping.
 
