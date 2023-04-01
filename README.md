@@ -8,7 +8,7 @@ Note this is alpha code.
 
 To take an srt file, for example created by whisper.cpp, and add info on who is talking for each segment in the .srt file.
 
-Currently it just takes a modified srt file and outputs another srt file with "Speaker" or "Not speaker" per segment. A segment in this project is a piece of subtitle with an start and an end timestamp. Each segment is assumed to only have one speaker in it.
+Currently it just takes an srt file and outputs another srt file with "Speaker" or "Not speaker" per segment. A segment in this project is a piece of subtitle with an start and an end timestamp. Each segment is assumed to only have one speaker in it.
 
 Whisper.cpp actually has a command line flag for diarization, as they call it, but it works poorly in practice: <https://github.com/ggerganov/whisper.cpp/issues/64>
 
