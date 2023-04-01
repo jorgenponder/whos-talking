@@ -42,7 +42,7 @@ And hit return. I think this step downloads something. Then paste in:
     verification = SpeakerRecognition.from_hparams(source="speechbrain/spkrec-ecapa-voxceleb", savedir="pretrained_models/spkrec-ecapa-voxceleb")
     score, prediction = verification.verify_files("tests/samples/ASR/spk1_snt1.wav", "tests/samples/ASR/spk2_snt1.wav") # Different Speakers
 
-You can then check what is in ```score```. Should be a value below 0.5. The paste in the line:
+You can then check what is in ```score```. Should be a value below 0.5. Then paste in the line:
 
     score, prediction = verification.verify_files("tests/samples/ASR/spk1_snt1.wav", "tests/samples/ASR/spk1_snt2.wav") # Same Speaker
 
