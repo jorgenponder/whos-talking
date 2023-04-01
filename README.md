@@ -1,6 +1,6 @@
 # Who's talking?
 
-A project to detect who is talking when in audio/video and mark that up as metadata in captions
+A project to detect who is talking when, in audio/video, and mark that up as metadata in captions
 
 Note this is alpha code, it's literally just a first upload to have something to show.
 
@@ -12,7 +12,7 @@ Currently it just takes a modified srt file and outputs another srt file with "S
 
 ## How it works, high level
 
-It splits a wav file ito small parts according to a spec file you've made. It then compares each part to a known speaker in a wav file, and indicates if that speaker is the one speaking. It uses SpeechBrain for that last part, see further down. It uses a speaker sample, i.e. you must have a short wav file with only the speaker you're looking for.
+It splits a wav file into small parts according to a spec file you've made. It then compares each part to a known speaker in a wav file, and indicates if that speaker is the one speaking. It uses SpeechBrain for that last part, see further down. It uses a speaker sample, i.e. you must have a short wav file with only the speaker you're looking for.
 
 See this tweet for an example: <https://twitter.com/jorgenponder/status/1641948460420145152>
 
@@ -80,3 +80,15 @@ You can then check what is in ```score```. Should be a value below 0.5. Then pas
     score, prediction = verification.verify_files("tests/samples/ASR/spk1_snt1.wav", "tests/samples/ASR/spk1_snt2.wav") # Same Speaker
 
 Should be a value above 0.5 in ```score```. The above code snipptes taken from: <https://huggingface.co/speechbrain/spkrec-ecapa-voxceleb>
+
+## Roadmap
+
+The different functions will be split into command line programs that work with STDIN and STDOUT.
+
+The first in the chain will take an .srt file and create a spec file fo chopping up int segment wav files.
+
+The second will do the actual chopping.
+
+The third will run SpeechBrain over the wav files, with a set of reference wavfiles for speaker identification. Output from this step migh be JSON or WebVTT.
+
+If JSON, there will also be a step to convert that into WebVTT.
