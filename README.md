@@ -2,13 +2,13 @@
 
 A project to detect who is talking when, in audio/video, and mark that up as metadata in captions
 
-Note this is alpha code, it's literally just a first upload to have something to show.
+Note this is alpha code.
 
 ## Purpose
 
 To take an srt file, for example created by whisper.cpp, and add info on who is talking for each segment in the .srt file.
 
-Currently it just takes a modified srt file and outputs another srt file with "Speaker" or "Not speaker" per segment. A segment is a piece of subtitle between two timestamps.
+Currently it just takes a modified srt file and outputs another srt file with "Speaker" or "Not speaker" per segment. A segment in this project is a piece of subtitle with an start and an end timestamp. Each segment is assumed to only have one speaker in it.
 
 Whisper.cpp actually has a command line flag for diarization, as they call it, but it works poorly in practice: <https://github.com/ggerganov/whisper.cpp/issues/64>
 
@@ -20,9 +20,9 @@ See this tweet for an example: <https://twitter.com/jorgenponder/status/16419484
 
 ## How it works, lower level
 
-You need one srt file that contains the video or sound file.
+You need one srt file that contains the video or sound file. Each segment must have an end timestamp and not just a start timestamp.
 
-If you have a big file called ```20200424.mp4```, and a file ```20200424.srt``` containing the segments, split.py will split the mp4 file into wav segments based on the timestamps from those segments:
+If you have a video file called ```20200424.mp4```, and a file ```20200424.srt``` containing the segments, split.py will split the mp4 file into wav segments based on the timestamps from those segments:
 
     cat 2020-04-24.srt | ./bin/python split.py 20200424.mp4
     
