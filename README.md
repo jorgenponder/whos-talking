@@ -46,8 +46,6 @@ Clone SpeechBrain:
 
     git clone git@github.com:speechbrain/speechbrain.git
 
-You will now need to move stuff up from that directory to where virtualenv is. I'm a bit unsure how I did this looking at my bash history. This the iffy step that should have been done differently. Maybe install everything from source or something. Or just change the code below to specify into the speechbrain directory.
-
 Install ipython:
 
     ./bin/pip install ipython
@@ -56,25 +54,17 @@ Start ipython:
 
     ./bin/ipython
 
-Paste in:
-
-    import torchaudio
-    from speechbrain.pretrained import EncoderClassifier, SpeakerRecognition
-    classifier = EncoderClassifier.from_hparams(source="speechbrain/spkrec-ecapa-voxceleb")
-    signal, fs =torchaudio.load('tests/samples/ASR/spk1_snt1.wav')
-    embeddings = classifier.encode_batch(signal)
-
-And hit return. I think this step downloads something. Then paste in:
+Then paste in:
 
     from speechbrain.pretrained import SpeakerRecognition
-    verification = SpeakerRecognition.from_hparams(source="speechbrain/spkrec-ecapa-voxceleb", savedir="pretrained_models/spkrec-ecapa-voxceleb")
-    score, prediction = verification.verify_files("tests/samples/ASR/spk1_snt1.wav", "tests/samples/ASR/spk2_snt1.wav") # Different Speakers
+    verification = SpeakerRecognition.from_hparams(source="speechbrain/speechbrain/spkrec-ecapa-voxceleb", savedir="speechbrain/pretrained_models/spkrec-ecapa-voxceleb")
+    score, prediction = verification.verify_files("speechbrain/tests/samples/ASR/spk1_snt1.wav", "speechbrain/tests/samples/ASR/spk2_snt1.wav") # Different Speakers
 
 You can then check what is in ```score```. Should be a value below 0.5. Then paste in the line:
 
-    score, prediction = verification.verify_files("tests/samples/ASR/spk1_snt1.wav", "tests/samples/ASR/spk1_snt2.wav") # Same Speaker
+    score, prediction = verification.verify_files("speechbrain/tests/samples/ASR/spk1_snt1.wav", "speechbrain/tests/samples/ASR/spk1_snt2.wav") # Same Speaker
 
-Should be a value above 0.5 in ```score```. The above code snipptes taken from: <https://huggingface.co/speechbrain/spkrec-ecapa-voxceleb>
+Should be a value above 0.5 in ```score```. The above code snippets slightly modified from: <https://huggingface.co/speechbrain/spkrec-ecapa-voxceleb>
 
 ## Roadmap
 
