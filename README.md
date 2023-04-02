@@ -35,18 +35,6 @@ It splits a wav file into small parts from an srt file, for example made by whis
 
 See this tweet for an example: <https://twitter.com/jorgenponder/status/1641948460420145152>
 
-## How it works, lower level
-
-You need one srt file that contains the video or sound file. Each segment must have an end timestamp and not just a start timestamp.
-
-If you have a video file called ```20200424.mp4```, and a file ```20200424.srt``` containing the segments, split.py will split the mp4 file into wav segments based on the timestamps from those segments:
-
-    cat 2020-04-24.srt | ./bin/python split.py 20200424.mp4
-    
-Once you have all those wav files, you can run ```./bin python make-srt-with-id.py```. First you must change the specifications in ```make-srt-with-id.py``` to match where the wav files are, and where the speaker sample is.
-
-./bin/python make-srt-with-id.py
-
 ## Install SpeechBrain
 
 This project relies on SpeechBrain. Here is one way to install it. It's not the smartest way to do it but I prefer to specify the way I did that worked, instead of an optimized way I haven't tried yet. Instructions for Ubuntu, but should work under most OSes.
@@ -82,18 +70,6 @@ You can then check what is in ```score```. Should be a value below 0.5. Then pas
     score, prediction = verification.verify_files("speechbrain/tests/samples/ASR/spk1_snt1.wav", "speechbrain/tests/samples/ASR/spk1_snt2.wav") # Same Speaker
 
 Should be a value above 0.5 in ```score```. The above code snippets slightly modified from: <https://huggingface.co/speechbrain/spkrec-ecapa-voxceleb>
-
-## Roadmap
-
-The different functions will be split into command line programs that work with STDIN and STDOUT.
-
-The first in the chain will take an .srt file and create a spec file for chopping up into segment wav files.
-
-The second will do the actual chopping.
-
-The third will run SpeechBrain over the wav files, with a set of reference wavfiles for speaker identification. Output from this step migh be JSON or WebVTT.
-
-If JSON, there will also be a step to convert that into WebVTT.
 
 ## Benchmarks
 
