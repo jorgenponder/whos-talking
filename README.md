@@ -8,9 +8,26 @@ Note this is alpha code.
 
 To take an srt file, for example created by whisper.cpp, and add info on who is talking for each segment in the .srt file.
 
-Currently it just takes an srt file and outputs another srt file with "Speaker" or "Not speaker" per segment. A segment in this project is a piece of subtitle with an start and an end timestamp. Each segment is assumed to only have one speaker in it.
+Currently it takes an srt file and the correspond video or audio file and outputs another srt file with the speaker's name or "unknownt speaker" per segment. A segment in this project is a piece of subtitle with a start and an end timestamp. Each segment is assumed to only have one speaker in it.
 
 Whisper.cpp actually has a command line flag for diarization, as they call it, but it works poorly in practice: <https://github.com/ggerganov/whisper.cpp/issues/64>
+
+## Syntax
+
+split.py:
+
+    cat transcript.srt | ./bin/python split.py video.mp4
+
+The split files will end up in a subdirectory called ```split-segments```.
+
+identify.py:
+
+    echo '{"dir_path":"split-segments"}'|./bin/python identify.py -r "speaker-sample.wav" | tee -a output.srt
+
+The reason that identify.py takes JSON on STDIN is because in a future, that is what split.py is going to output, so you can pipe them together.
+
+You should be able to supply a directory of speaker samples also, a bit untested right now. And also in JSON format, see source in "./helpers".
+
 
 ## How it works, high level
 
