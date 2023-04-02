@@ -10,9 +10,12 @@ def get_subs(data):
     """ """
     subs = []
     for sub in srt.parse(data):
-        # use case is no subs 10 hours or longer
-        start = "0" + str(sub.start)
-        end = "0" + str(sub.end)
+        start = str(sub.start)
+        end = str(sub.end)
+        if start[1] == ":":
+            start += '0'
+        if end[1] == ":":
+            end += '0'       
         subs.append({'start':start, 'end':end})
     return subs
 
@@ -36,13 +39,14 @@ def main():
 
     for line in get_subs(data):
         id = Path(original_file).stem + line['start'].split('.')[0].replace(':','')
-        print(id)
+        # FIXME, make sure start is left padded with a zero
+        # print(id)
         command = cmd_string.format(original_file=original_file, start=line['start'], end=line['end'], out_path=out_path, id=id)
-        print(command)
+        # print(command)
 
         # use subprocess to execute the command in the shell
         subprocess.call(command, shell=True)
-
+    print(out_path)
     return None
 
 
