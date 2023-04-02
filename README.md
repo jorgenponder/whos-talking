@@ -76,11 +76,23 @@ Should be a value above 0.5 in ```score```. The above code snippets slightly mod
 
 ## Benchmarks
 
-30 minutes of split audio seemed to give about 110MB wav files.
+30 minutes of split audio seemed to give about 110MB of wav files.
+
+On an AMD Ryzen 4000 series 5 laptop:
 
 The time to split the file into 320 segments was 6 minutes. This included converting from 44.1KHz aac.
 
-The time to speaker identify the speaker in 320 segments was 5 minutes looking for one speaker.
+The time to identify one speaker only, across 320 segments was 4½ minutes with a 27s identifying file.
+
+With a 6s identifying file, it took 2½ minutes
+The 6s file had one difference that could go either way, compared to the 27s file
+
+
+With a 3s identifying file, it took 2 minutes
+The 3s file had one false negative, and one that could go either way (same as the 6s file), compared to the 27s file
+
+Using a different 3s file, there was one false negative. A different one than with the first 3s file. Possibly, this could mean that 3s is not enough to capture enough voice characteristics.
+
 
 
 An aac file at 16KHz seems to be 5x to 6x smaller than a wav file. So for long-time storage of audio segments, maybe aac can be an option.
