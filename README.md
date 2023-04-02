@@ -87,3 +87,14 @@ The second will do the actual chopping.
 The third will run SpeechBrain over the wav files, with a set of reference wavfiles for speaker identification. Output from this step migh be JSON or WebVTT.
 
 If JSON, there will also be a step to convert that into WebVTT.
+
+## Benchmarks
+
+30 minutes of split audio seemed to give about 110MB wav files.
+
+The time to split the file into 320 segments was 6 minutes. This included converting from 44.1KHz aac.
+
+The time to speaker identify the speaker in 320 segments was 5 minutes looking for one speaker.
+
+
+An aac file at 16KHz seems to be 5x to 6x smaller than a wav file. So for long-time storage of audio segments, maybe aac can be an option.

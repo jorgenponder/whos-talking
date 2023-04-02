@@ -13,10 +13,11 @@ def get_subs(data):
         start = str(sub.start)
         end = str(sub.end)
         if start[1] == ":":
-            start += '0'
+            start = '0' + start
         if end[1] == ":":
-            end += '0'       
+            end = '0' + end
         subs.append({'start':start, 'end':end})
+        print(subs)
     return subs
 
 def main():
