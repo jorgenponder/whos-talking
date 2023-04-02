@@ -24,21 +24,24 @@ def main():
     """split a wav file into specified segments by calling ffmpeg from the shell"""
 
     # check command line for original wav file and segment list file
-    if len(sys.argv) != 2:
-        print("usage: split <original_file>")
+    if len(sys.argv) != 3:
+        print("usage: split <srt file> <original file with audio in it>")
         exit(1)
-    data = ''.join(sys.stdin.readlines())
+    # data = ''.join(sys.stdin.readlines())
     try:
         os.mkdir(out_path)
     except FileExistsError:
         pass
     # record command line args
-    original_file = sys.argv[1]
+    srt_file = sys.argv[1]
+    srt_data = open(srt_file)
+    original_file = sys.argv[2]
+    
 
     # create a template of the ffmpeg call in advance
     cmd_string = "ffmpeg -y -i {original_file} -acodec pcm_s16le -ar 16000 -ss {start} -to {end} {out_path}{id}.wav"
 
-    for line in get_subs(data):
+    for line in get_subs(srt_data):
         id = Path(original_file).stem + line['start'].split('.')[0].replace(':','')
         # FIXME, make sure start is left padded with a zero
         # print(id)

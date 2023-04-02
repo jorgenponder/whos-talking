@@ -16,7 +16,7 @@ Whisper.cpp actually has a command line flag for diarization, as they call it, b
 
 split.py:
 
-    cat transcript.srt | ./bin/python split.py video.mp4
+    ./bin/python split.py transcript.srt video.mp4
 
 The split files will end up in a subdirectory called ```split-segments```.
 
