@@ -18,8 +18,8 @@ def get_omitters(reference_voices):
     """Builds up a dictionary of after how many seconds into a show voices not found should be omitted from the search space. Used e.g. to filter out alternating hosts not present."""
     omitters = {}
     for voice in reference_voices:
-        if 'omit_if_not_early' in voice:
-            omitters[voice['file']] = voice['omit_if_not_early']
+        if 'omit if not detected within' in voice:
+            omitters[voice['file']] = voice['omit if not detected within']
     return omitters
 
 def get_params():

@@ -32,21 +32,26 @@ identify.py:
                             and filepath properties to get reference voice files from.
     -w SEGMENTS_DIR, --wav-segments SEGMENTS_DIR
 
-You should be able to supply a directory of speaker samples also, a bit untested right now. And also in JSON format, see source in "./helpers":
+You should be able to supply a directory of speaker samples also, a bit untested right now:
 
     ./bin/python identify.py -r "speaker-samples-dir"
     ./bin/python identify.py -r "speaker-samples-list.json"
 
+And also in JSON format:
+
+        [{"name":"John Doe", "file":"johndoe.wav", "omit if not detected within":120}]
+
+"omit if not detected within" is an optional optimization and indicates after how many seconds into a show if the voice is not found it should be omitted from the search space. Used e.g. to filter out alternating hosts not present
 
 ## How it works, high level
 
-It splits a wav file into small parts from an srt file, for example made by whisper.cpp. It then compares each part to a known speaker in a wav file, and indicates if that speaker is the one speaking. It uses SpeechBrain for that last part, see further down. It uses a speaker sample, i.e. you must have a short wav file with only the speaker you're looking for.
+It splits a video or sound file into small wav parts, aided by an srt file, for example made by whisper.cpp. It then compares each part to a known speaker in a wav file, and indicates if that speaker is the one speaking. It uses SpeechBrain for that last part, see further down. It uses speaker samples, i.e. you must have short wav files, one each for every speaker you're looking for.
 
 See this tweet for an example: <https://twitter.com/jorgenponder/status/1641948460420145152>
 
 ## Install SpeechBrain
 
-This project relies on SpeechBrain. Here is one way to install it. It's not the smartest way to do it but I prefer to specify the way I did that worked, instead of an optimized way I haven't tried yet. Instructions for Ubuntu, but should work under most OSes.
+This project relies on SpeechBrain. Here is one way to install it. It's not the smartest way to do it but I prefer to specify the way I did that worked, instead of any optimized ways I haven't tried yet. Instructions for Ubuntu, but should work under most OSes.
 
 Make a directory with virtualenv:
 
@@ -104,10 +109,3 @@ An aac file at 16KHz seems to be 5x to 6x smaller than a wav file. So for long-t
 
 SpeechBrain seems to create a lot of symlinked wav files. In fact hundreds of them. This may be some kind of handling error from my side. Not sure.
 
-## Roadmap
-
-To implement some heuristics, that if a speaker has not been heard for the first 2 minutes or so, they are likely not in that video at all, and can be disabled as a reference file to be compared with.
-
-This could possibly be controlled in a speakers.json file:
-
-    [{"name":"John Doe", "file":"johndoe.wav", "omit if not detected within":120}]
