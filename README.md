@@ -22,9 +22,15 @@ The split files will end up in a subdirectory called ```split-segments```.
 
 identify.py:
 
-    echo '{"dir_path":"split-segments"}'|./bin/python identify.py -r "speaker-sample.wav" | tee -a output.srt
-
-The reason that identify.py takes JSON on STDIN is because in a future, that is what split.py is going to output, so you can pipe them together.
+    options:
+    -h, --help            show this help message and exit
+    -r REFERENCES, --reference-files REFERENCES
+                            Where to get reference voice files from. If directory or file, the filename(s) without suffix
+                            will be used as id for that speaker. If file, only that file will be used. If value is a file
+                            with the .txt or .lst extension, it will be interpreted as a file with lines, specifying
+                            speakers in order of priority. If the file extension is JSON, it will be intrepreted with name
+                            and filepath properties to get reference voice files from.
+    -w SEGMENTS_DIR, --wav-segments SEGMENTS_DIR
 
 You should be able to supply a directory of speaker samples also, a bit untested right now. And also in JSON format, see source in "./helpers":
 
@@ -80,19 +86,28 @@ Should be a value above 0.5 in ```score```. The above code snippets slightly mod
 
 On an AMD Ryzen 4000 series 5 laptop:
 
-The time to split the file into 320 segments was 6 minutes. This included converting from 44.1KHz aac.
+The time to split the 30 minute mp4 file into 320 segments was 6 minutes. This included converting from 44.1KHz aac.
 
-The time to identify one speaker only, across 320 segments was 4½ minutes with a 27s identifying file.
+The time to identify one speaker only, across 320 segments was 4½ minutes with a 27s identifying file. The speaker was identified in 168 segments.
 
 With a 6s identifying file, it took 2½ minutes
-The 6s file had one difference that could go either way, compared to the 27s file
-
+The 6s file had one difference that could go either way, compared to the 27s file.
 
 With a 3s identifying file, it took 2 minutes
-The 3s file had one false negative, and one that could go either way (same as the 6s file), compared to the 27s file
+The 3s file had one false negative, and one that could go either way (same as the 6s file), compared to the 27s file. If we assume the 27s file is correct then this is about 0.6% worse recall.
 
 Using a different 3s file, there was one false negative. A different one than with the first 3s file. Possibly, this could mean that 3s is not enough to capture enough voice characteristics.
 
-
-
 An aac file at 16KHz seems to be 5x to 6x smaller than a wav file. So for long-time storage of audio segments, maybe aac can be an option.
+
+## Anomalies
+
+SpeechBrain seems to create a lot of symlinked wav files. In fact hundreds of them. This may be some kind of handling error from my side. Not sure.
+
+## Roadmap
+
+To implement some heuristics, that if a speaker has not been heard for the first 2 minutes or so, they are likely not in that video at all, and can be disabled as a reference file to be compared with.
+
+This could possibly be controlled in a speakers.json file:
+
+    [{"name":"John Doe", "file":"johndoe.wav", "omit if not detected within":120}]
